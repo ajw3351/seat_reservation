@@ -18,46 +18,43 @@ import ajw.Controller.FileWrite;
 import ajw.json.Info;
 import ajw.json.User;
 
-public class TicketDetails extends JFrame{
-    
+public class TicketDetails extends JFrame {
+
     User mUser;
     Info mInfo;
     Controller controller = Controller.getInstance();
-    public TicketDetails(){
+
+    public TicketDetails() {
         setTitle("예매");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         mUser = controller.getUser();
         mInfo = controller.getSelectInfo();
-       
+
         JPanel midPanel = new JPanel(new BorderLayout());
-        JPanel botPanel = new JPanel(new GridLayout(1,3,10,10));
+        JPanel botPanel = new JPanel(new GridLayout(1, 3, 10, 10));
 
-    
-        midPanel.setBounds(125,25,750,480);
-        botPanel.setBounds(720,540,270,30);
-        
-   
+        midPanel.setBounds(125, 25, 750, 480);
+        botPanel.setBounds(720, 540, 270, 30);
+
         getContentPane().add(midPanel);
-        getContentPane().add(botPanel);        
+        getContentPane().add(botPanel);
 
-
-        //midPanel
+        // midPanel
         JPanel infoLabelPanel = new JPanel();
-        JPanel infoPanel = new JPanel(new GridLayout(12,1,10,10));
-        JPanel cancelPanel =new JPanel(new BorderLayout());
+        JPanel infoPanel = new JPanel(new GridLayout(13, 1, 10, 10));
+        JPanel cancelPanel = new JPanel(new BorderLayout());
 
         JPanel emptyPanel = new JPanel();
         JButton cancelButton = new JButton("예매취소");
 
-        cancelPanel.add(emptyPanel,BorderLayout.CENTER);
-        cancelPanel.add(cancelButton,BorderLayout.NORTH);
+        cancelPanel.add(emptyPanel, BorderLayout.CENTER);
+        cancelPanel.add(cancelButton, BorderLayout.NORTH);
 
         JLabel infoLabel = new JLabel("My 예매정보");
-        infoLabel.setFont(new Font("휴먼편지체",Font.BOLD,25));
+        infoLabel.setFont(new Font("휴먼편지체", Font.BOLD, 25));
         infoLabelPanel.add(infoLabel);
-
 
         JLabel gameLabel = new JLabel("경   기 : " + mInfo.getTitle());
         JLabel dateLabel = new JLabel("일   시 : " + mInfo.getTime());
@@ -75,31 +72,35 @@ public class TicketDetails extends JFrame{
         infoPanel.add(paymentLabel);
         infoPanel.add(AreaLabel);
         infoPanel.add(seatLabel);
-        
-        JLabel [] seatNumLabel = new JLabel[4];
-        for(int i = 0; i < mInfo.getSeatList().size(); i++)
-        {    
+
+        JLabel[] seatNumLabel = new JLabel[4];
+        for (int i = 0; i < mInfo.getSeatList().size(); i++) {
             seatNumLabel[i] = new JLabel("        " + mInfo.getSeatList().get(i));
             infoPanel.add(seatNumLabel[i]);
         }
         infoPanel.setBackground(Color.WHITE);
         emptyPanel.setBackground(Color.WHITE);
-       
-        midPanel.add(infoLabelPanel,BorderLayout.NORTH);
-        midPanel.add(infoPanel, BorderLayout.CENTER);
-        midPanel.add(cancelPanel,BorderLayout.EAST);
 
-        //botPanel
+        if ((mInfo.getGetTicket()).equals("티켓배송")) {
+            JLabel addressLabel = new JLabel("티켓수령지 : " + mInfo.getTicketAddress());
+            infoPanel.add(addressLabel);
+        }
+
+        midPanel.add(infoLabelPanel, BorderLayout.NORTH);
+        midPanel.add(infoPanel, BorderLayout.CENTER);
+        midPanel.add(cancelPanel, BorderLayout.EAST);
+
+        // botPanel
         JButton backButton = new JButton("이전");
         JButton homeButton = new JButton("홈");
-        JButton disposeButton=new JButton("종료");
+        JButton disposeButton = new JButton("종료");
         botPanel.add(backButton);
         botPanel.add(homeButton);
         botPanel.add(disposeButton);
 
         homeButton.addActionListener(new ActionListener() {
             @Override
-			public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 new Home();
 
                 dispose();
@@ -108,27 +109,27 @@ public class TicketDetails extends JFrame{
 
         backButton.addActionListener(new ActionListener() {
             @Override
-			public void actionPerformed(ActionEvent e) {
-				new ReservationDetails();
+            public void actionPerformed(ActionEvent e) {
+                new ReservationDetails();
                 dispose();
-			}
+            }
         });
         disposeButton.addActionListener(new ActionListener() {
             @Override
-			public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
 
         cancelButton.addActionListener(new ActionListener() {
             @Override
-			public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 mUser.getInfos().remove(mInfo);
 
                 FileWrite FW = new FileWrite();
 
                 try {
-                    FW.FileWrite(mUser);
+                    FW.FileWrite(mUser, controller.getmUserId());
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -140,8 +141,7 @@ public class TicketDetails extends JFrame{
             }
         });
 
-
-        setSize(1020,630);
+        setSize(1020, 630);
         setVisible(true);
         setResizable(false);
     }

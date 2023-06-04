@@ -7,25 +7,28 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import com.google.gson.Gson;
-
 import ajw.Controller.Controller;
-
-import ajw.json.User;
+import ajw.Controller.FileRead;
+import ajw.json.UserDataBase;
+import ajw.json.UserInfo;
 
 public class LoginScreen extends JFrame {
     JTextField jtf1 = new JTextField(10);
-    JTextField jtf2 = new JTextField(10);
+    JPasswordField jtf2 = new JPasswordField(10);
+    String userId;
+    ArrayList<UserInfo> mUserList = new ArrayList<>();
+    UserDataBase mUserDataBase;
+    String userPwd;
 
     public LoginScreen() {
         setTitle("시스템");
@@ -38,7 +41,7 @@ public class LoginScreen extends JFrame {
         title.add(login);
 
         JPanel jp1 = new JPanel();
-        jp1.setLayout(new GridLayout(3, 2));
+        jp1.setLayout(new GridLayout(4, 2));
 
         JPanel idPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JLabel jlb1 = new JLabel("아이디 : ", JLabel.CENTER);
@@ -70,11 +73,22 @@ public class LoginScreen extends JFrame {
         JPanel joinPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton join = new JButton("회원가입");
 
+        JPanel findIdPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton findIdButton = new JButton("아이디 찾기");
+
+        JPanel findPwdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton findPwd = new JButton("비밀번호 찾기");
+
         loginPanel.add(jLogin);
         joinPanel.add(join);
 
+        findIdPanel.add(findIdButton);
+        findPwdPanel.add(findPwd);
+
         jp1.add(loginPanel);
         jp1.add(joinPanel);
+        jp1.add(findIdPanel);
+        jp1.add(findPwdPanel);
 
         JPanel jp2 = new JPanel();
         jp2.setLayout(new FlowLayout());
@@ -90,25 +104,55 @@ public class LoginScreen extends JFrame {
         setResizable(false);
         setVisible(true);
 
+        Controller controller = Controller.getInstance();
+        mUserDataBase = controller.getUserDataBase();
+        FileRead FR = new FileRead();
+
+        try {
+            mUserDataBase = FR.ReadUserFile(mUserDataBase);
+            controller.setUserDataBase(mUserDataBase);
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+
         jLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String myId = jtf1.getText();
+                String mypwd = new String(jtf2.getPassword());
 
-                var user = Controller.getInstance().getUser();
-                Controller.getInstance().setUserName(myId);
+                mUserList = mUserDataBase.getUserList();
 
-                try {
-                    ReadFile(user);
-                } catch (FileNotFoundException exception) {
-                    exception.printStackTrace();
+                for (int i = 0; i < mUserList.size(); i++) {
+                    if ((mUserList.get(i).getId()).equals(myId)) {
+                        userId = mUserList.get(i).getId();
+                        controller.setUserName(mUserList.get(i).getName());
+                        controller.setmUserId(mUserList.get(i).getId());
+                        // 위의 2줄 바꿔서 가능
+                        controller.setUserInfo(mUserList.get(i));
+                        userPwd = mUserList.get(i).getPwd();
+                        break;
+                    }
+                }
+                if (userId == null)
+                    JOptionPane.showMessageDialog(null, "등록되지 않은 사용자입니다.");
+
+                else if (mypwd.equals(userPwd)) {
+
+                    var user = controller.getUser();
+
+                    try {
+                        user = FR.ReadFile(userId);
+                        Controller.getInstance().setUser(user);
+                    } catch (FileNotFoundException exception) {
+                        exception.printStackTrace();
+                    }
+                    new Home();
+                    dispose();
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "일치하지 않은 비밀번호입니다.");
                 }
 
-                String mypwd = new String(jtf2.getText());
-
-                // JOptionPane.showMessageDialog(null,"아이디 : "+myId+", 비밀번호"+mypwd);
-
-                new Home();
-                dispose();
             }
         });
 
@@ -122,16 +166,26 @@ public class LoginScreen extends JFrame {
 
             }
         });
+
+        findIdButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FindId();
+                dispose();
+
+            }
+        });
+
+        findPwd.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FindPwd();
+                dispose();
+
+            }
+        });
     }
 
-    private void ReadFile(User user) throws FileNotFoundException {
-
-        String root = System.getProperty("user.dir");
-        String filePath;
-        filePath = root + "/seat_reservation/src/main/java/Info/" + user.getUserName() + ".json";
-        Reader reader = new FileReader(filePath);
-
-        Gson gson = new Gson();
-        user = gson.fromJson(reader, User.class);
-    }
 }

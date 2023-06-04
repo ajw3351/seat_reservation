@@ -6,7 +6,6 @@ public class User {
 
     String userName;
     ArrayList<Info> infos = new ArrayList<>();
-    
 
     public String getUserName() {
         return userName;
@@ -16,7 +15,6 @@ public class User {
         this.userName = userName;
     }
 
-    
     public ArrayList<Info> getInfos() {
         return infos;
     }

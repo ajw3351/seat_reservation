@@ -11,12 +11,14 @@ public class Info {
     String getTicket;
     String area;
     ArrayList<String> seatList = new ArrayList<>();
+    String ticketAddress;
 
     public Info() {
-        
+
     }
 
-    public Info(String title, String time, String price, String bookingNum, String payment, String getTicket, String area) {
+    public Info(String title, String time, String price, String bookingNum, String payment, String getTicket,
+            String area) {
         this.title = title;
         this.time = time;
         this.price = price;
@@ -25,7 +27,6 @@ public class Info {
         this.getTicket = getTicket;
         this.area = area;
     }
-
 
     public String getTitle() {
         return title;
@@ -89,5 +90,13 @@ public class Info {
 
     public void setSeatList(ArrayList<String> seatList) {
         this.seatList = seatList;
+    }
+
+    public String getTicketAddress() {
+        return ticketAddress;
+    }
+
+    public void setTicketAddress(String ticketAddress) {
+        this.ticketAddress = ticketAddress;
     }
 }

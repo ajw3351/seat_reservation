@@ -17,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ajw.Controller.Controller;
-import ajw.json.Info;
-import ajw.json.User;
 
 public class Reservation extends JFrame {
 
@@ -99,7 +97,7 @@ public class Reservation extends JFrame {
         buy[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.getInstance().setGame(mGame, mDate.get(0) + mTime);
+                Controller.getInstance().setGame(mGame, mDate.get(1) + mTime);
                 new SelectSeatArea();
                 dispose();
             }
@@ -108,7 +106,7 @@ public class Reservation extends JFrame {
         buy[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.getInstance().setGame(mGame, mDate.get(0) + mTime);
+                Controller.getInstance().setGame(mGame, mDate.get(2) + mTime);
                 new SelectSeatArea();
                 dispose();
             }

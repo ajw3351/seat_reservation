@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 public class UserDataBase {
 
-    ArrayList<User> userList = new ArrayList<>();
+    ArrayList<UserInfo> userList = new ArrayList<>();
 
-    public ArrayList<User> getUserList() {
+    public ArrayList<UserInfo> getUserList() {
         return userList;
     }
 
-    public void setUserList(ArrayList<User> userList) {
+    public void setUserList(ArrayList<UserInfo> userList) {
         this.userList = userList;
+    }
+
+    public void addUserList(UserInfo user) {
+        userList.add(user);
     }
 }

@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -21,8 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
-import ajw.json.Info;
-import ajw.json.User;
 import ajw.Controller.Controller;
 import ajw.Controller.FileWrite;
 
@@ -36,6 +33,7 @@ public class Pay extends JFrame {
     String[] 수령방법 = { "현장수령", "모바일티켓", "티켓배송" };
     JRadioButton[] paymentButtons = new JRadioButton[3];
     String[] 결제수단 = { "무통장입금", "카카오페이", "네이버페이" };
+    JTextArea ta = new JTextArea(5, 40);
 
     Vector<JLabel> seatDetails = new Vector<>();
 
@@ -58,8 +56,7 @@ public class Pay extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        
-        int price = mAreaPrice * controller.getSeatNum().size();
+        int price = controller.getPrice() * controller.getSeatNum().size();
 
         JPanel payDetailPanel = new JPanel();
         JPanel reservationDetails = new JPanel();
@@ -168,8 +165,8 @@ public class Pay extends JFrame {
         // 예매자
         JLabel userCheck = new JLabel("예매자 확인");
         userCheck.setFont(new Font("휴먼엑스포", Font.PLAIN, 23));
-        JLabel name = new JLabel("이름 : ");
-        JLabel phoneNum = new JLabel("연락처 : ");
+        JLabel name = new JLabel("이름 : " + controller.getUserInfo().getName());
+        JLabel phoneNum = new JLabel("연락처 : " + controller.getUserInfo().getPhoneNum());
         JLabel teamCheck = new JLabel("응원구단");
         ButtonGroup teamGroup = new ButtonGroup();
         JRadioButton homeTeam = new JRadioButton("두산"); // gameInfo에서 가져와야됨
@@ -190,8 +187,9 @@ public class Pay extends JFrame {
         address.setFont(new Font("휴먼엑스포", Font.PLAIN, 23));
 
         address.setBounds(0, 10, 335, 60);
-        JTextArea ta = new JTextArea(5, 40);
+
         ta.setBounds(10, 80, 315, 80);
+        ta.setEnabled(false);
 
         addressPanel.add(address);
         addressPanel.add(ta);
@@ -231,18 +229,13 @@ public class Pay extends JFrame {
                 JOptionPane.showMessageDialog(null, "결제가 완료되었습니다.");
 
                 controller.setBookingNum(bookingNum);
-
-
-
-
-
-
+                controller.setTicketAddress(ta.getText());
 
                 var user = controller.theEnd();
                 FileWrite FW = new FileWrite();
 
                 try {
-                    FW.FileWrite(user);
+                    FW.FileWrite(user, controller.getmUserId());
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
@@ -253,55 +246,25 @@ public class Pay extends JFrame {
         });
     }
 
-    // //json에 정보 set
-    // public void setInfo(Vector<String> reserveInfo){
-    // Info info = new Info();
-    // info.setTitle(reserveInfo.get(0));
-    // info.setTime(reserveInfo.get(1));
-    // info.setPrice(reserveInfo.get(2));
-    // info.setBookingNum(reserveInfo.get(3));
-    // info.setGetTicket(reserveInfo.get(4));
-    // info.setPayment(reserveInfo.get(5));
-    // info.setArea(reserveInfo.get(6));
-
-    // ArrayList<String> seatList = new ArrayList<>();
-    // int people = Integer.parseInt(reserveInfo.get(7));
-    // for(int i = 0; i < people; i++)
-    // seatList.add(reserveInfo.get(8+i));
-    // info.setSeatList(seatList);
-
-    // //Info에
-    // Book book = new Book();
-    // book.setInfo(info);
-
-    // //
-    // ArrayList<Book> newBooks = new ArrayList<>();
-    // newBooks = this.mUser.getBooks();
-    // newBooks.add(book);
-    // mUser.setBooks(newBooks);
-
-    // FileWrite FW = new FileWrite();
-
-    // try {
-    // FW.FileWrite(mUser);
-    // } catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
-    // }
-
     // Item 리스너 생성
     class MyItemListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.DESELECTED)
                 return;
-            if (getButtons[0].isSelected())
+            if (getButtons[0].isSelected()) {
                 controller.set_GetTicket(수령방법[0]);
-    
-            if (getButtons[1].isSelected())
+                ta.setEnabled(false);
+            }
+
+            if (getButtons[1].isSelected()) {
                 controller.set_GetTicket(수령방법[1]);
-            if (getButtons[2].isSelected())
+                ta.setEnabled(false);
+            }
+
+            if (getButtons[2].isSelected()) {
                 controller.set_GetTicket(수령방법[2]);
+                ta.setEnabled(true);
+            }
 
             if (paymentButtons[0].isSelected())
                 controller.setPayment(결제수단[0]);

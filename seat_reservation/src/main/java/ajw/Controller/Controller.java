@@ -4,16 +4,51 @@ import java.util.ArrayList;
 
 import ajw.json.Info;
 import ajw.json.User;
+import ajw.json.UserDataBase;
+import ajw.json.UserInfo;
 
 public class Controller {
 
     private static Controller mController = new Controller();
 
     User mUser;
+    UserDataBase mUserDataBase = new UserDataBase();
+    UserInfo mUserInfo;
+    String mUserId;
+    String mUserPwd;
+    
+    String mAuthenticationCode;
+
+    
 
     Info mInfo = new Info();
 
     private int price;
+
+
+    public String getAuthenticationCode() {
+        return mAuthenticationCode;
+    }
+
+    public void setAuthenticationCode(String AuthenticationCode) {
+        this.mAuthenticationCode = AuthenticationCode;
+    }
+
+    public String getmUserId() {
+        return mUserId;
+    }
+
+    public void setmUserId(String userId) {
+        this.mUserId = userId;
+    }
+
+    // public String getmUserPwd() {
+    //     return mUserPwd;
+    // }
+
+    // public void setmUserPwd(String mUserPwd) {
+    //     this.mUserPwd = mUserPwd;
+    // }
 
     private Controller() {
 
@@ -22,6 +57,24 @@ public class Controller {
     public User theEnd() {
         mUser.addInfo(mInfo);
         return mUser;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        mUserInfo = new UserInfo();
+        mUserInfo = userInfo;
+    }
+
+    public UserInfo getUserInfo(){
+        return mUserInfo;
+    }
+
+    public UserDataBase addUserInfo() {
+        mUserDataBase.addUserList(mUserInfo);
+        return mUserDataBase;
+    }
+
+    public void clearUser() {
+        mUser = new User();
     }
 
     public static Controller getInstance() {
@@ -37,6 +90,14 @@ public class Controller {
         return mUser;
     }
 
+    public UserDataBase getUserDataBase() {
+        return mUserDataBase;
+    }
+
+    public void setUserDataBase(UserDataBase userDataBase) {
+        this.mUserDataBase = userDataBase;
+    }
+
     public void setUserName(String userName) {
         mUser.setUserName(userName);
     }
@@ -47,7 +108,11 @@ public class Controller {
     }
 
     public String[] getGame() {
-        return new String[] {mInfo.getTitle(), mInfo.getTime()};
+        return new String[] { mInfo.getTitle(), mInfo.getTime() };
+    }
+
+    public void clearGame() {
+
     }
 
     public void setArea(String area) {
@@ -62,15 +127,24 @@ public class Controller {
         this.price = price;
     }
 
-    public int getPrice(){
+    public int getPrice() {
         return price;
     }
 
-    public void setSeatNum(ArrayList<String> seatNum){
+    public void setTotalPrice(int people) {
+        int totalPrice = people * price;
+        mInfo.setPrice(Integer.toString(totalPrice));
+    }
+
+    public String getTotalPrice() {
+        return mInfo.getPrice();
+    }
+
+    public void setSeatNum(ArrayList<String> seatNum) {
         mInfo.setSeatList(seatNum);
     }
 
-    public ArrayList<String> getSeatNum(){
+    public ArrayList<String> getSeatNum() {
         return mInfo.getSeatList();
     }
 
@@ -102,13 +176,21 @@ public class Controller {
         mInfo = new Info();
     }
 
-    public void setSelectInfo(int index){
+    public void setSelectInfo(int index) {
         mInfo = new Info();
         mInfo = mUser.getInfos().get(index);
     }
 
-    public Info getSelectInfo(){
+    public Info getSelectInfo() {
         return mInfo;
     }
-}
 
+    public void setTicketAddress(String address){
+        mInfo.setTicketAddress(address);
+    }
+
+    public String getTicketAddress(){
+        return mInfo.getTicketAddress();
+    }
+
+}
