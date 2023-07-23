@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 
 import ajw.Controller.Controller;
 import ajw.Controller.FileRead;
+import ajw.DAO.TicketDAO;
+import ajw.DAO.UserDAO;
 import ajw.json.UserDataBase;
 import ajw.json.UserInfo;
 
@@ -29,6 +31,8 @@ public class LoginScreen extends JFrame {
     ArrayList<UserInfo> mUserList = new ArrayList<>();
     UserDataBase mUserDataBase;
     String userPwd;
+    private UserDAO userDao = UserDAO.getInstance();
+    private TicketDAO ticketDao = TicketDAO.getInstance();
 
     public LoginScreen() {
         setTitle("시스템");
@@ -117,41 +121,60 @@ public class LoginScreen extends JFrame {
 
         jLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                userDao.connect();
                 String myId = jtf1.getText();
                 String mypwd = new String(jtf2.getPassword());
 
-                mUserList = mUserDataBase.getUserList();
+                int login = userDao.login(myId, mypwd);
 
-                for (int i = 0; i < mUserList.size(); i++) {
-                    if ((mUserList.get(i).getId()).equals(myId)) {
-                        userId = mUserList.get(i).getId();
-                        controller.setUserName(mUserList.get(i).getName());
-                        controller.setmUserId(mUserList.get(i).getId());
-                        // 위의 2줄 바꿔서 가능
-                        controller.setUserInfo(mUserList.get(i));
-                        userPwd = mUserList.get(i).getPwd();
-                        break;
-                    }
-                }
-                if (userId == null)
+                if(login == -1){
+                    JOptionPane.showMessageDialog(null, "일치하지 않은 비밀번호입니다.");
+                }else if(login == -2){
                     JOptionPane.showMessageDialog(null, "등록되지 않은 사용자입니다.");
-
-                else if (mypwd.equals(userPwd)) {
-
-                    var user = controller.getUser();
-
-                    try {
-                        user = FR.ReadFile(userId);
-                        Controller.getInstance().setUser(user);
-                    } catch (FileNotFoundException exception) {
-                        exception.printStackTrace();
-                    }
+                }else if(login == -3){
+                    JOptionPane.showMessageDialog(null, "서버 오류");
+                }else{
+                    ticketDao.connect();
+                    Controller.getInstance().setmUserId(myId);
+                    ticketDao.getTicket(Controller.getInstance().getUser(), myId);
                     new Home();
                     dispose();
-                } else {
-
-                    JOptionPane.showMessageDialog(null, "일치하지 않은 비밀번호입니다.");
                 }
+
+
+                // 파일 입출력
+                // mUserList = mUserDataBase.getUserList();
+
+                // for (int i = 0; i < mUserList.size(); i++) {
+                //     if ((mUserList.get(i).getId()).equals(myId)) {
+                //         userId = mUserList.get(i).getId();
+                //         controller.setUserName(mUserList.get(i).getName());
+                //         controller.setmUserId(mUserList.get(i).getId());
+                //         // 위의 2줄 바꿔서 가능
+                //         controller.setUserInfo(mUserList.get(i));
+                //         userPwd = mUserList.get(i).getPwd();
+                //         break;
+                //     }
+                // }
+                // if (userId == null)
+                //     JOptionPane.showMessageDialog(null, "등록되지 않은 사용자입니다.");
+
+                // else if (mypwd.equals(userPwd)) {
+
+                //     var user = controller.getUser();
+
+                //     try {
+                //         user = FR.ReadFile(userId);
+                //         Controller.getInstance().setUser(1);
+                //     } catch (FileNotFoundException exception) {
+                //         exception.printStackTrace();
+                //     }
+                //     new Home();
+                //     dispose();
+                // } else {
+
+                //     JOptionPane.showMessageDialog(null, "일치하지 않은 비밀번호입니다.");
+                // }
 
             }
         });

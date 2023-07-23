@@ -163,7 +163,7 @@ public class SelectSeat extends JFrame {
 
         switch (area) {
             case "테라존(VIP석)":
-                // JCheckBox[][] seats = new JCheckBox[6][44];
+
                 JPanel teraZone = new JPanel();
 
                 teraZone.setLayout(null);
@@ -226,60 +226,6 @@ public class SelectSeat extends JFrame {
 
                 break;
 
-            // case 2:
-            // JCheckBox[][] seats1 = new JCheckBox[6][15];
-            // JCheckBox[][] seats2 = new JCheckBox[6][15];
-            // JCheckBox[][] seats3 = new JCheckBox[10][15];
-            // // JCheckBox[][] seats4 = new JCheckBox[10][15];
-
-            // JPanel Apanel=new JPanel(new GridLayout(6,15));
-            // JPanel Bpanel =new JPanel(new GridLayout(6,15));
-            // JPanel Cpanel =new JPanel(new GridLayout(10,15));
-            // //JPanel Dpanel =new JPanel(new GridLayout(10,15));
-            // for (int j = 0; j < 6; j++) {
-            // for (int i = 0; i < 15; i++) {
-            // JCheckBox chkBox = new JCheckBox();
-            // chkBox.setForeground(Color.BLACK);
-            // seats1[j][i] = chkBox;
-            // char input = (char) (j + 65);
-            // Apanel.add(chkBox);
-            // }
-            // }
-            // //B구역
-            // for (int j = 0; j < 6; j++) {
-            // for (int i = 0; i < 15; i++) {
-            // JCheckBox chkBox = new JCheckBox();
-            // chkBox.setForeground(Color.BLACK);
-            // seats2[j][i] = chkBox;
-            // char input = (char) (j + 65);
-            // Bpanel.add(chkBox);
-            // }
-            // }
-            // //C구역
-            // for (int j = 0; j < 10; j++) {
-            // for (int i = 0; i < 15; i++) {
-            // JCheckBox chkBox = new JCheckBox();
-            // chkBox.setForeground(Color.BLACK);
-            // seats3[j][i] = chkBox;
-            // char input = (char) (j + 65);
-            // Cpanel.add(chkBox);
-            // }
-            // }
-            // seatPanel.setLayout(new GridLayout(2,2));
-            // seatPanel.add(Apanel);
-            // seatPanel.add(Bpanel);
-            // seatPanel.add(Cpanel);
-
-            // reset.addActionListener(new ActionListener() {
-            // @Override
-            // public void actionPerformed(ActionEvent e){
-
-            // dispose();
-            // }
-            // });
-
-            // break;
-
             default:
                 break;
         }
@@ -288,7 +234,6 @@ public class SelectSeat extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // TODO 지우기
                 new SelectSeatArea();
                 dispose();
             }
@@ -305,9 +250,6 @@ public class SelectSeat extends JFrame {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                // new Pay(mGameInfo, seatsNumber, mAreaPrice, mSeatCheck,mAreaindex,mUser);
-                // //경기정보, 선택한 좌석 정보, 결제금액, 선택한 좌석수, 구역인덱스를 담아서 넘김
 
                 Controller.getInstance().setSeatNum(seatsNumber);
                 Controller.getInstance().setTotalPrice(seatsNumber.size());
@@ -333,11 +275,11 @@ public class SelectSeat extends JFrame {
             row = row - 65;
             // if (i != 13 && i != 24 && i != 34)
             int col = Integer.parseInt(seatInfo[1]) - 1;
-            if (13 <= col && col < 24)
+            if (13 <= col && col < 23)
                 col++;
-            else if (24 <= col && col < 34)
+            else if (23 <= col && col < 32)
                 col += 2;
-            else if (col >= 34)
+            else if (col >= 32)
                 col += 3;
 
             seats[row][col].setEnabled(false);

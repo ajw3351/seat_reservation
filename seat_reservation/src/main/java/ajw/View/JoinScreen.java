@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import ajw.Controller.Controller;
 import ajw.Controller.EmailController;
 import ajw.Controller.FileWrite;
+import ajw.DAO.UserDAO;
 import ajw.json.UserDataBase;
 import ajw.json.UserInfo;
 
@@ -44,6 +45,9 @@ public class JoinScreen extends JFrame {
 	Controller controller = Controller.getInstance();
 
 	ArrayList<UserInfo> mUserList = new ArrayList<>();
+	boolean TF = true;
+
+	private UserDAO userDao = UserDAO.getInstance();
 
 	public JoinScreen() {
 
@@ -144,6 +148,8 @@ public class JoinScreen extends JFrame {
 				String myPhone = new String(phone.getText());
 
 				if (myPwd.equals(myPwdCheck) && myPhone != null) {
+					userDao.connect();
+
 					userInfo.setId(myId);
 					userInfo.setPwd(myPwd);
 					userInfo.setName(myName);
@@ -154,12 +160,7 @@ public class JoinScreen extends JFrame {
 					userDataBase = controller.addUserInfo();
 
 					FileWrite FW = new FileWrite();
-					try {
-						FW.FileWrite(userDataBase);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					userDao.register(userInfo);
 
 					JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
 					new LoginScreen();
@@ -220,11 +221,16 @@ public class JoinScreen extends JFrame {
 					for (int i = 0; i < mUserList.size(); i++) {
 						if ((mUserList.get(i).getId()).equals(id.getText())) {
 							JOptionPane.showMessageDialog(null, "중복되는 아이디가 있습니다.");
+							TF = false;
 							break;
 						}
+						TF = true;
+					}
+					if(TF){
 						emailSendButton.setEnabled(true);
 						JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
 					}
+					
 				}
 			}
 		});

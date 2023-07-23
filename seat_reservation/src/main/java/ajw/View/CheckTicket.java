@@ -21,7 +21,7 @@ public class CheckTicket extends JFrame {
 
     public CheckTicket() {
         setTitle("예매");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         setLayout(null);
 
         var controller = Controller.getInstance();
@@ -103,18 +103,12 @@ public class CheckTicket extends JFrame {
             }
         });
 
-        // printButton.addActionListener(new ActionListener() {
-        // @Override
-        // public void actionPerformed(ActionEvent e) {
-        // try {
-        // table.print(JTable.PrintMode.FIT_WIDTH,new MessageFormat("Header"),new
-        // MessageFormat("Footer")); //JTable.PrintMode.FIT_WIDTH 테이블 전체를 출력하는 인쇄모드, 행이
-        // 많다면 여러 페이지로 나눠서 인쇄함,
-        // } catch (Exception ex) {
-        // ex.printStackTrace();
-        // }
-        // }
-        // });
+        printButton.addActionListener(new ActionListener() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                new Ticket();
+            }
+        });
         disposeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

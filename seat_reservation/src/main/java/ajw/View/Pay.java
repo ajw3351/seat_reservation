@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 
 import ajw.Controller.Controller;
 import ajw.Controller.FileWrite;
+import ajw.DAO.TicketDAO;
 
 public class Pay extends JFrame {
     String[] mArea = { "테라존(VIP석)", "1루 테이블석", "1루 익사이팅존", "1루 블루석", "1루 FILA zone", "1루 레드석", "1루 네이비석", "중앙네이비석",
@@ -42,11 +43,7 @@ public class Pay extends JFrame {
     String ranNum = "";
     String bookingNum = "";
 
-    // 넘겨주는 값int area,String gameInfo,int areaPrice,JLabel areaImage
-    int mAreaIndex;
-    String mGameInfo;
-    int mAreaPrice;
-    int mPeople;
+    private TicketDAO ticektDao = TicketDAO.getInstance();
 
     Controller controller = Controller.getInstance();
     Vector<String> reserveInfo = new Vector<String>(); // 여기에 예매 정보가 저장된다.
@@ -226,22 +223,26 @@ public class Pay extends JFrame {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "결제가 완료되었습니다.");
+                int answer = JOptionPane.showConfirmDialog(null, "결제하시겠습니까?", "결제", JOptionPane.YES_NO_OPTION);
+                if (answer == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "결제가 완료되었습니다.");
 
-                controller.setBookingNum(bookingNum);
-                controller.setTicketAddress(ta.getText());
+                    ticektDao.connect();
 
-                var user = controller.theEnd();
-                FileWrite FW = new FileWrite();
+                    controller.setBookingNum(bookingNum);
+                    controller.setTicketAddress(ta.getText());
 
-                try {
-                    FW.FileWrite(user, controller.getmUserId());
-                } catch (IOException exception) {
-                    exception.printStackTrace();
+                    var user = controller.theEnd();
+                    FileWrite FW = new FileWrite();
+
+                    ticektDao.buyTicket(controller.getmInfo(), controller.getmUserId());
+
+                    new CheckTicket();
+                    dispose();
+                } else {
+                    System.out.println("결제xxx");
                 }
 
-                new CheckTicket();
-                dispose();
             }
         });
     }

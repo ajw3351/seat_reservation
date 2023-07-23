@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class User {
 
-    String userName;
+    String userId;
     ArrayList<Info> infos = new ArrayList<>();
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public ArrayList<Info> getInfos() {
         return infos;
     }
 
-    public void setInfos(ArrayList<Info> infos) {
-        this.infos = infos;
-    }
+    // public void setInfos(ArrayList<Info> infos) {
+    //     this.infos = infos;
+    // }
 
     public void addInfo(Info info) {
         infos.add(info);

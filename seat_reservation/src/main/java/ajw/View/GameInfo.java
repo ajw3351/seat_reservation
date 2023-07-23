@@ -14,6 +14,8 @@ public class GameInfo {
 
     private String stadium;// 나중에 데이터베이스나 파일입출력으로 라벨에 값 입력하는 방법으로
 
+    private ArrayList<ImageIcon> imageList = new ArrayList<>();
+
     public GameInfo() {
         super();
     }
@@ -43,10 +45,13 @@ public class GameInfo {
         return date;
     }
 
-    public ImageIcon GameTeamImage() { // ()안에 int index 추가예정
+    public ArrayList<ImageIcon> GameTeamImage() { // ()안에 int index 추가예정
         // 변수 imgae에 값을 넣는 코드
         image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\kiwoom.jpg");
-        return image;
+        imageList.add(image);
+        image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\doosan.jpg");
+        imageList.add(image);
+        return imageList;
     }
 
     public String GamePlace() {

@@ -11,20 +11,26 @@ public class Controller {
 
     private static Controller mController = new Controller();
 
-    User mUser;
+    User mUser = new User();
     UserDataBase mUserDataBase = new UserDataBase();
     UserInfo mUserInfo;
     String mUserId;
-    String mUserPwd;
-    
-    String mAuthenticationCode;
+   // String mUserPwd;
 
-    
+    String mAuthenticationCode;
 
     Info mInfo = new Info();
 
+   
     private int price;
 
+    public Info getmInfo() {
+        return mInfo;
+    }
+
+    public void setmInfo(Info mInfo) {
+        this.mInfo = mInfo;
+    }
 
     public String getAuthenticationCode() {
         return mAuthenticationCode;
@@ -43,11 +49,11 @@ public class Controller {
     }
 
     // public String getmUserPwd() {
-    //     return mUserPwd;
+    // return mUserPwd;
     // }
 
     // public void setmUserPwd(String mUserPwd) {
-    //     this.mUserPwd = mUserPwd;
+    // this.mUserPwd = mUserPwd;
     // }
 
     private Controller() {
@@ -64,7 +70,7 @@ public class Controller {
         mUserInfo = userInfo;
     }
 
-    public UserInfo getUserInfo(){
+    public UserInfo getUserInfo() {
         return mUserInfo;
     }
 
@@ -99,7 +105,7 @@ public class Controller {
     }
 
     public void setUserName(String userName) {
-        mUser.setUserName(userName);
+        mUser.setUserId(userName);
     }
 
     public void setGame(String game, String time) {
@@ -185,11 +191,11 @@ public class Controller {
         return mInfo;
     }
 
-    public void setTicketAddress(String address){
+    public void setTicketAddress(String address) {
         mInfo.setTicketAddress(address);
     }
 
-    public String getTicketAddress(){
+    public String getTicketAddress() {
         return mInfo.getTicketAddress();
     }
 

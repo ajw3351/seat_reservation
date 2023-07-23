@@ -19,7 +19,7 @@ public class FileWrite {
         //파일에 저장
         String root = System.getProperty("user.dir");
         String filePath;
-        filePath = root + "/seat_reservation/src/main/java/Info/" + Id + ".json";
+        filePath = root + "/seat_reservation/seat_reservation/src/main/java/Info/" + Id + ".json";
         FileWriter fw = new FileWriter(filePath);
         gson.toJson(user,fw);
 
@@ -35,7 +35,7 @@ public class FileWrite {
         //파일에 저장
         String root = System.getProperty("user.dir");
         String filePath;
-        filePath = root + "/seat_reservation/src/main/java/Info/UserInfo.json";
+        filePath = root + "/seat_reservation/seat_reservation/src/main/java/Info/UserInfo.json";
         FileWriter fw = new FileWriter(filePath);
         gson.toJson(userDataBase,fw);
 

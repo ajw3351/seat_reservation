@@ -25,8 +25,7 @@ public class SelectSeatArea extends JFrame implements ListSelectionListener {
             "1루 레드휠체어석(동반O)", "1루 레드휠체어석(동반X)", "3루 블루휠체어석", "3루 레드휠체어석(동반O)", "3루 레드휠체어석(동반X)", "1루 블루석 시야방해",
             "1루 FILA zone 시야방해", "1루 레드석 시야방해", "1루 네이비석 시야방해", "중앙네이비석 시야방해", "1루 외야지정석 시야방해", "3루 블루석 시야방해",
             "3루 오렌지석 시야방해", "3루 레드석 시야방해", "3루 네이비석 시야방해", "3루 외야지정석 시야방해" };
-    int[] mPrice = { 15000, 18000, 2134, 2134, 2134, 243, 2143, 243, 243, 243, 2431, 2143, 24, 2134 }; // HashMap으로 구역,
-                                                                                                       // 가격
+    int[] mPrice = { 15000, 18000, 2134, 2134, 2134, 243, 2143, 243, 243, 243, 2431, 2143, 24, 2134 }; 
 
     private ArrayList<ImageIcon> mImageList = new ArrayList<>();
 
@@ -119,7 +118,7 @@ public class SelectSeatArea extends JFrame implements ListSelectionListener {
         String filePath;
 
         for (int i = 0; i < 36; i++) {
-            filePath = root + "/seat_reservation/src/main/java/resource/" + (i + 1) + ".png";
+            filePath = root + "/seat_reservation/seat_reservation/src/main/java/resource/" + (i + 1) + ".png";
             mImageList.add(new ImageIcon(filePath));
         }
     }

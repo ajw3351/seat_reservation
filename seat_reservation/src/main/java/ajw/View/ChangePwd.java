@@ -38,7 +38,7 @@ public class ChangePwd extends JFrame {
 
         JPanel title = new JPanel();
 
-        JLabel findId = new JLabel("아이디 찾기");
+        JLabel findId = new JLabel("새 비밀번호 설정");
         findId.setFont(new Font("맑은 고딕", Font.BOLD, 25));
 
         title.add(findId);

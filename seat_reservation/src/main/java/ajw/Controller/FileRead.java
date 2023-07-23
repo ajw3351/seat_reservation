@@ -19,7 +19,7 @@ public class FileRead {
 
         String root = System.getProperty("user.dir");
         String filePath;
-        filePath = root + "/seat_reservation/src/main/java/Info/" + Id + ".json";
+        filePath = root + "/seat_reservation/seat_reservation/src/main/java/Info/" + Id + ".json";
         Reader reader = new FileReader(filePath);
 
         Gson gson = new Gson();
@@ -34,7 +34,7 @@ public class FileRead {
 
         String root = System.getProperty("user.dir");
         String filePath;
-        filePath = root + "/seat_reservation/src/main/java/Info/UserInfo.json";
+        filePath = root + "/seat_reservation/seat_reservation/src/main/java/Info/UserInfo.json";
         Reader reader = new FileReader(filePath);
 
         Gson gson = new Gson();
