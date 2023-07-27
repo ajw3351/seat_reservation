@@ -32,11 +32,12 @@ public class UserDAO {
     public void register(UserInfo userInfo){
         String id = userInfo.getId();
         String pwd = userInfo.getPwd();
-        String name = userInfo.getId();
+        String name = userInfo.getName();
         String email = userInfo.getEmail();
         String phoneNum = userInfo.getPhoneNum();
+        String type = "0";
 
-        String sql = "INSERT INTO \"User\" VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO \"User\" VALUES(?, ?, ?, ?, ?, ?)";
         
         try{
             pstmt = con.prepareStatement(sql);
@@ -45,6 +46,7 @@ public class UserDAO {
             pstmt.setString(3,name); 
             pstmt.setString(4,email); 
             pstmt.setString(5,phoneNum);   
+            pstmt.setString(6,type);
             pstmt.executeUpdate();
             System.out.println("데이터 삽입 완료");
         } catch (Exception e) {

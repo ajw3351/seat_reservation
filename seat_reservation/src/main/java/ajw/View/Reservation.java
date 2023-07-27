@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ajw.Controller.Controller;
+import ajw.DAO.GameDAO;
+import ajw.VO.GameVO;
 
 public class Reservation extends JFrame {
 
@@ -36,16 +38,21 @@ public class Reservation extends JFrame {
     int i;
 
     private GameInfo model = new GameInfo();
+    ArrayList<GameVO> gameInfo;
 
     private String mGame;
     private String mTime;
     private ArrayList<String> mDate = new ArrayList<>();
+
+    private GameDAO userDao = GameDAO.getInstance();
 
     public Reservation() {
         setTitle("예매");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container main = getContentPane();
         main.setLayout(new BorderLayout(50, 20));
+
+        gameInfo = userDao.getGameInfo();
 
         JPanel p1 = new JPanel(new GridLayout(3, 1, 10, 20));
         JPanel p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
@@ -65,14 +72,6 @@ public class Reservation extends JFrame {
         em3.add(new JLabel(" "));
         JPanel em4 = new JPanel();
         em4.add(new JLabel(" "));
-
-        // gameInfo에서 가져온 정보 변수에 저장
-        mGame = this.model.GameTeam();
-        mTime = this.model.GameTime();
-        mDate = this.model.GameDate();
-
-        // 이미지 사이즈 변경
-        sizeChanged();
 
         // 예매 박스
         makeBox();
@@ -126,6 +125,7 @@ public class Reservation extends JFrame {
 
     private void makeBox() {
         for (i = 0; i < 3; i++) {
+            sizeChanged(i);
             imgLabel[i] = new JLabel();
             imgLabel[i].setIcon(updateimage);
             imgLabel[i].setHorizontalAlignment(JLabel.CENTER);
@@ -137,9 +137,9 @@ public class Reservation extends JFrame {
             buy[i] = new JButton();
             teamImgPanel[i] = new JPanel();
 
-            mGameLabels.add(new JLabel(mGame));
-            mDateLabels.add(new JLabel(mDate.get(i)));
-            mTimeLabels.add(new JLabel(mTime));
+            mGameLabels.add(new JLabel(gameInfo.get(i).getTitle()));
+            mDateLabels.add(new JLabel(gameInfo.get(i).getDate()));
+            mTimeLabels.add(new JLabel(gameInfo.get(i).getTime()));
 
             info[i].setLayout(new GridLayout(3, 1));
             info[i].add(mGameLabels.get(i));
@@ -163,11 +163,16 @@ public class Reservation extends JFrame {
         }
     }
 
-    private void sizeChanged() {
-
-        Image img = model.GameTeamImage().get(0).getImage();
+    private void sizeChanged(int index) {
+        String root = System.getProperty("user.dir");
+        String filePath1, filePath2;
+        String home = gameInfo.get(index).getHomeImg();
+        String away = gameInfo.get(index).getAwayImg();
+        filePath1 = root + home;
+        filePath2 = root + away;
+        Image img = (new ImageIcon(filePath1)).getImage();
         Image updateImg = img.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
-        Image img2 = model.GameTeamImage().get(1).getImage();
+        Image img2 = (new ImageIcon(filePath2)).getImage();
         Image updateImg2 = img2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
         updateimage = new ImageIcon(updateImg);
         updateimage2 = new ImageIcon(updateImg2);

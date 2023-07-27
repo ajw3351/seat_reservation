@@ -47,9 +47,9 @@ public class GameInfo {
 
     public ArrayList<ImageIcon> GameTeamImage() { // ()안에 int index 추가예정
         // 변수 imgae에 값을 넣는 코드
-        image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\kiwoom.jpg");
+        image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\키움.jpg");
         imageList.add(image);
-        image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\doosan.jpg");
+        image = new ImageIcon("C:\\Users\\ajw1\\Desktop\\ee\\두산.jpg");
         imageList.add(image);
         return imageList;
     }
