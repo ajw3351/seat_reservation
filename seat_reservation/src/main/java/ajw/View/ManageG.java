@@ -14,13 +14,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ajw.Controller.Controller;
+import ajw.DAO.AreaDAO;
 import ajw.DAO.GameDAO;
 import ajw.VO.GameVO;
 
-public class Reservation extends JFrame {
+public class ManageG extends JFrame {
 
     ImageIcon updateimage;
     ImageIcon updateimage2;
@@ -29,30 +31,29 @@ public class Reservation extends JFrame {
     JLabel[] imgLabel2 = new JLabel[3];
     JPanel[] info = new JPanel[3];
     JPanel[] teamImgPanel = new JPanel[3];
-    JButton[] buy = new JButton[3];
+    JButton[] delete = new JButton[3];
     ArrayList<JLabel> mDateLabels = new ArrayList<>();
     ArrayList<JLabel> mTimeLabels = new ArrayList<>();
     ArrayList<JLabel> mGameLabels = new ArrayList<>();
+    ArrayList<JLabel> mSeatLabels = new ArrayList<>();
+    int capacity;
+    int reserved;
 
     JPanel[] box = new JPanel[3];
     int i;
 
-    private GameInfo model = new GameInfo();
     ArrayList<GameVO> gameInfo;
 
-    private String mGame;
-    private String mTime;
-    private ArrayList<String> mDate = new ArrayList<>();
+    private GameDAO gameDao = GameDAO.getInstance();
+    private AreaDAO areaDao = AreaDAO.getInstance();
 
-    private GameDAO userDao = GameDAO.getInstance();
-
-    public Reservation() {
-        setTitle("예매");
+    public ManageG() {
+        setTitle("관리자모드");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container main = getContentPane();
         main.setLayout(new BorderLayout(50, 20));
 
-        gameInfo = userDao.getGameInfo();
+        gameInfo = gameDao.getGameInfo();
 
         JPanel p1 = new JPanel(new GridLayout(3, 1, 10, 20));
         JPanel p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
@@ -61,7 +62,7 @@ public class Reservation extends JFrame {
         JButton backButton = new JButton("이전");
 
         p2.add(backButton);
-        p3.add(new JLabel("예매"));
+        p3.add(new JLabel("경기 관리"));
 
         // 여백 패널
         JPanel em1 = new JPanel();
@@ -73,7 +74,7 @@ public class Reservation extends JFrame {
         JPanel em4 = new JPanel();
         em4.add(new JLabel(" "));
 
-        // 예매 박스
+        // 경기 박스
         makeBox();
         for (i = 0; i < 3; i++)
             p1.add(box[i]);
@@ -88,36 +89,48 @@ public class Reservation extends JFrame {
         setVisible(true);
         setResizable(false);
 
-        buy[0].addActionListener(new ActionListener() {
+        delete[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.getInstance().setGame(gameInfo.get(0).getTitle(), gameInfo.get(0).getDate() + gameInfo.get(0).getTime());
-                new SelectSeatArea();
-                dispose();
+                try {
+                    gameDao.DeleteGame(0);
+                    JOptionPane.showMessageDialog(null, "삭제되었습니다.");
+                } catch (Exception e1) {
+                    System.out.println(e1);
+                    JOptionPane.showMessageDialog(null, "에러 발생");
+                }
             }
         });
-        buy[1].addActionListener(new ActionListener() {
+        delete[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.getInstance().setGame(gameInfo.get(1).getTitle(), gameInfo.get(1).getDate() + gameInfo.get(1).getTime());
-                new SelectSeatArea();
-                dispose();
+                try {
+                    gameDao.DeleteGame(1);
+                    JOptionPane.showMessageDialog(null, "삭제되었습니다.");
+                } catch (Exception e1) {
+                    System.out.println(e1);
+                    JOptionPane.showMessageDialog(null, "에러 발생");
+                }
             }
         });
 
-        buy[2].addActionListener(new ActionListener() {
+        delete[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.getInstance().setGame(gameInfo.get(2).getTitle(), gameInfo.get(2).getDate() + gameInfo.get(2).getTime());
-                new SelectSeatArea();
-                dispose();
+                try {
+                    gameDao.DeleteGame(2);
+                    JOptionPane.showMessageDialog(null, "삭제되었습니다.");
+                } catch (Exception e1) {
+                    System.out.println(e1);
+                    JOptionPane.showMessageDialog(null, "에러 발생");
+                }
             }
         });
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Home();
+                new ManageGame();
                 dispose();
             }
         });
@@ -125,6 +138,9 @@ public class Reservation extends JFrame {
 
     private void makeBox() {
         for (i = 0; i < 3; i++) {
+            capacity = areaDao.getCapacity();
+            //팔린 좌석 수 
+            reserved = 0;
             sizeChanged(i);
             imgLabel[i] = new JLabel();
             imgLabel[i].setIcon(updateimage);
@@ -134,31 +150,33 @@ public class Reservation extends JFrame {
             imgLabel2[i].setHorizontalAlignment(JLabel.CENTER);
             info[i] = new JPanel();
             box[i] = new JPanel();
-            buy[i] = new JButton();
+            delete[i] = new JButton();
             teamImgPanel[i] = new JPanel();
 
             mGameLabels.add(new JLabel(gameInfo.get(i).getTitle()));
             mDateLabels.add(new JLabel(gameInfo.get(i).getDate()));
             mTimeLabels.add(new JLabel(gameInfo.get(i).getTime()));
+            mSeatLabels.add(new JLabel(reserved + " / " + capacity));
 
-            info[i].setLayout(new GridLayout(3, 1));
+            info[i].setLayout(new GridLayout(4, 1));
             info[i].add(mGameLabels.get(i));
             info[i].add(mDateLabels.get(i));
             info[i].add(mTimeLabels.get(i));
+            info[i].add(mSeatLabels.get(i));
             info[i].setBackground(Color.WHITE);
 
-            buy[i].setText("예매하기");
+            delete[i].setText("예매하기");
 
-            teamImgPanel[i].setLayout(new GridLayout(1,3));
+            teamImgPanel[i].setLayout(new GridLayout(1, 3));
             teamImgPanel[i].add(imgLabel[i]);
             teamImgPanel[i].add(new JLabel("                  VS"));
             teamImgPanel[i].add(imgLabel2[i]);
             teamImgPanel[i].setBackground(Color.WHITE);
-            
+
             box[i].setLayout(new BorderLayout(20, 10));
             box[i].add(info[i], BorderLayout.CENTER);
             box[i].add(teamImgPanel[i], BorderLayout.WEST);
-            box[i].add(buy[i], BorderLayout.EAST);
+            box[i].add(delete[i], BorderLayout.EAST);
             box[i].setBackground(Color.WHITE);
         }
     }

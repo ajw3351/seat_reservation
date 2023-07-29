@@ -3,6 +3,7 @@ package ajw.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -32,7 +33,20 @@ public class GameDAO {
 
     public void register(GameVO gameVO) {
         connect();
-        int gameId = gameVO.getGameId();
+        //등록되어 있는 경기 수
+        int size = 2;
+        String sqlTable = "SELECT * COUNT(*) AS total FROM \"Game\"";
+        try {
+            pstmt = con.prepareStatement(sqlTable);
+            rs = pstmt.executeQuery();
+            if(rs.next())
+                size = rs.getInt("total");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        int gameId = size;
         String title = gameVO.getTitle();
         String date = gameVO.getDate();
         String time = gameVO.getTime();
@@ -84,5 +98,44 @@ public class GameDAO {
         }
 
         return gameInfo;
+    }
+
+    public void DeleteGame(int index){
+        connect();
+        int size = 0;
+        String sqlTable = "SELECT * COUNT(*) AS total FROM \"Game\"";
+        try {
+            pstmt = con.prepareStatement(sqlTable);
+            rs = pstmt.executeQuery();
+            if(rs.next())
+                size = rs.getInt("total");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        String sqlDel = "DELETE * FROM \"Game\" SET \"gameId\" = ? WHERE \"gameId\" = ? ";
+        String sqlUpd = "UPDATE * FROM \"Game\" WHERE \"gameId\" = ? ";
+        try {
+            pstmt = con.prepareStatement(sqlDel);
+            pstmt.setInt(1, index);
+            int rowsAffected = pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            for(int i = index + 1; i < size; i++){
+                pstmt = con.prepareStatement(sqlUpd);
+                pstmt.setInt(1, i-1);
+                pstmt.setInt(2, i);
+                int rowsAffected = pstmt.executeUpdate();
+            }
+            
+
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 }

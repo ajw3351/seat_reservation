@@ -7,20 +7,24 @@ import com.google.gson.Gson;
 
 import ajw.Controller.Controller;
 import ajw.View.LoginScreen;
+import ajw.View.ManageGame;
 import ajw.json.User;
 import ajw.json.UserDataBase;
 
 public class main {
 
     public static void main(String[] args) {
-        // View
-        new LoginScreen();
+        // // View
+        // new LoginScreen();
 
-        // Model
-        User user = new User();
+        // // Model
+        // User user = new User();
             
-        // Controller
-        Controller.getInstance().setUser(user);
+        // // Controller
+        // Controller.getInstance().setUser(user);
+
+        //prac
+        new ManageGame();
 
     }
 }
