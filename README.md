@@ -11,4 +11,4 @@
 
 # 회원가입, 아이디/비밀번호 찾기
 - SMTP와 JavaMailAPI를 사용하여 이메일 인증번호를 발송하여 본인인증
-
+![ ](https://github.com/ajw3351/d/blob/main/%EB%AF%B8%EB%94%94%EC%96%B41.mp4)
