@@ -5,5 +5,10 @@
 
 # 데이터베이스
 - 무료 오픈 소스 관계형 데이터베이스인 postgreSQL을 사용
-![1](C:\Users\ajw1\OneDrive - KNU\바탕 화면\1q.png)
-![2](C:\Users\ajw1\OneDrive - KNU\바탕 화면\2q.png)
+![2](https://github.com/ajw3351/d/blob/main/1q.png)
+
+![2](https://github.com/ajw3351/d/blob/main/2q.png)
+
+# 회원가입, 아이디/비밀번호 찾기
+- SMTP와 JavaMailAPI를 사용하여 이메일 인증번호를 발송하여 본인인증
+
